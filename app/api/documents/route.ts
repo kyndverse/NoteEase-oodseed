@@ -2,10 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { v4 as uuid } from "uuid";
 
-export async function POST() {
+export async function POST(req: Request) {
+  const body = await req.json();
+
   const document = await prisma.document.create({
     data: {
-      title: "Untitled",
+      title: body.title,
       content: [
         {
           id: uuid(),
