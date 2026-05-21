@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label";
 import {
   createDocumentSchema,
   type CreateDocumentSchema,
-} from "../schemas/create-document-schema";
+} from "../../../schemas/documents/create-document-schema";
 import { useCreateDocument } from "../api/create-document";
 import { useState } from "react";
 
