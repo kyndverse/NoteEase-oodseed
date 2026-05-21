@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/lib/api-client";
 import { documentsQueryKeys } from "../constants/query-keys";
-import { Document } from "@/generated/prisma/client";
+import { Document } from "../types/document";
 
 export const getDocuments = async () => {
   const response = await apiClient.get<Document[]>("/documents");

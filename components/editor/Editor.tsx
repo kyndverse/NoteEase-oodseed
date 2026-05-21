@@ -3,67 +3,53 @@
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import debounce from "lodash.debounce";
-
+import { PartialBlock } from "@blocknote/core";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
-
-import { PartialBlock } from "@blocknote/core";
+import { useDocument } from "@/features/documents/api/get-document";
+import { useUpdateDocument } from "@/features/documents/api/update-document";
 
 export default function Editor({ documentId }: { documentId: string }) {
-  const [initialContent, setInitialContent] = useState<PartialBlock[] | null>(
-    null,
-  );
+  const { data, isLoading } = useDocument(documentId);
 
-  useEffect(() => {
-    const fetchDocument = async () => {
-      const res = await fetch(`/api/documents/${documentId}`);
-
-      const data = await res.json();
-
-      setInitialContent(data.content || []);
-    };
-
-    fetchDocument();
-  }, [documentId]);
-
-  if (initialContent === null) {
-    return <div className="text-white p-10">Loading...</div>;
+  if (isLoading || !data) {
+    return <div className="p-10 text-white">Loading...</div>;
   }
 
   return (
-    <EditorInstance documentId={documentId} initialContent={initialContent} />
+    <EditorInstance documentId={documentId} initialContent={data.content} />
   );
 }
 
-function EditorInstance({
+const EditorInstance = ({
   documentId,
   initialContent,
 }: {
   documentId: string;
+
   initialContent: PartialBlock[];
-}) {
+}) => {
   const editor = useCreateBlockNote({
     initialContent,
   });
 
+  const updateDocumentMutation = useUpdateDocument();
+
   const saveDocument = useMemo(
     () =>
-      debounce(async () => {
+      debounce(() => {
         const blocks = editor.document;
 
-        await fetch(`/api/documents/${documentId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            content: blocks,
-          }),
+        updateDocumentMutation.mutate({
+          id: documentId,
+
+          content: blocks as PartialBlock[],
         });
       }, 1000),
-    [editor, documentId],
+
+    [editor, documentId, updateDocumentMutation],
   );
 
   return (
@@ -76,7 +62,11 @@ function EditorInstance({
             saveDocument();
           }}
         />
+
+        {updateDocumentMutation.isPending && (
+          <p className="mt-4 text-sm text-zinc-500">Saving...</p>
+        )}
       </div>
     </main>
   );
-}
+};
