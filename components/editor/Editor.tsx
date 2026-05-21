@@ -19,7 +19,11 @@ export default function Editor({ documentId }: { documentId: string }) {
   }
 
   return (
-    <EditorInstance documentId={documentId} initialContent={data.content} />
+    <EditorInstance
+      key={documentId}
+      documentId={documentId}
+      initialContent={data.content}
+    />
   );
 }
 
@@ -28,28 +32,24 @@ const EditorInstance = ({
   initialContent,
 }: {
   documentId: string;
-
   initialContent: PartialBlock[];
 }) => {
   const editor = useCreateBlockNote({
     initialContent,
   });
 
-  const updateDocumentMutation = useUpdateDocument();
+  const { mutate } = useUpdateDocument();
 
   const saveDocument = useMemo(
     () =>
-      debounce(() => {
-        const blocks = editor.document;
-
-        updateDocumentMutation.mutate({
+      debounce((blocks: PartialBlock[]) => {
+        mutate({
           id: documentId,
-
-          content: blocks as PartialBlock[],
+          content: blocks,
         });
       }, 1000),
 
-    [editor, documentId, updateDocumentMutation],
+    [documentId, mutate],
   );
 
   return (
@@ -59,13 +59,11 @@ const EditorInstance = ({
           editor={editor}
           theme="dark"
           onChange={() => {
-            saveDocument();
+            saveDocument(editor.document as PartialBlock[]);
           }}
         />
 
-        {updateDocumentMutation.isPending && (
-          <p className="mt-4 text-sm text-zinc-500">Saving...</p>
-        )}
+        <div className="mt-4 text-sm text-zinc-500">Auto-saving enabled</div>
       </div>
     </main>
   );
