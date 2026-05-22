@@ -23,16 +23,16 @@ export const AppSidebar = () => {
       {/* Header */}
       <SidebarHeader className="px-4 py-4">
         <div className=" flex items-center gap-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0">
-          <div className=" flex h-10 w-10 items-center justify-center rounded-xl bg-white text-black shadow-lg  shrink-0   ">
+          <div className=" flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-lg  shrink-0   ">
             <Sparkles className="h-4 w-4" />
           </div>
 
           <div className="group-data-[collapsible=icon]:hidden">
             <h1 className="text-sm font-semibold tracking-tight">
-              Notebook AI
+              NoteEase
             </h1>
 
-            <p className="text-xs text-zinc-500">AI knowledge workspace</p>
+            <p className="text-xs text-zinc-500">Smart notebook</p>
           </div>
         </div>
       </SidebarHeader>

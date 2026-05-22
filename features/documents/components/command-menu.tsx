@@ -43,7 +43,7 @@ export function CommandMenu() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="overflow-hidden border-white/10 bg-[#111111] p-0 text-white shadow-2xl sm:max-w-2xl">
+      <DialogContent className="p-0 sm:max-w-2xl">
         <DialogHeader className="hidden">
           <DialogTitle>Command Menu</DialogTitle>
         </DialogHeader>
