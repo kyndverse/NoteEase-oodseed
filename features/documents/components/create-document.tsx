@@ -19,9 +19,10 @@ import { Label } from "@/components/ui/label";
 import {
   createDocumentSchema,
   type CreateDocumentSchema,
-} from "../../../schemas/documents/create-document-schema";
+} from "@/schemas/documents/create-document-schema";
 import { useCreateDocument } from "../api/create-document";
 import { useState } from "react";
+import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 const CreateDocument = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -47,10 +48,11 @@ const CreateDocument = () => {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button className="w-full">
-          <Plus className="mr-2 h-4 w-4" />
-          New Document
-        </Button>
+        <SidebarMenuButton tooltip="New Document" className="h-11">
+          <Plus className="h-4 w-4" />
+
+          <span>New Document</span>
+        </SidebarMenuButton>
       </DialogTrigger>
 
       <DialogContent>

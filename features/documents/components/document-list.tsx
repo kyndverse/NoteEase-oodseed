@@ -1,29 +1,73 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+import { usePathname } from "next/navigation";
+
+import { FileText } from "lucide-react";
 
 import { useDocuments } from "../api/get-documents";
 
-export function DocumentList() {
-  const router = useRouter();
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
-  const { data: documents, isLoading } = useDocuments();
+export function DocumentList() {
+  const pathname = usePathname();
+
+  const { data, isLoading } = useDocuments();
 
   if (isLoading) {
-    return <div className="text-sm text-zinc-500">Loading...</div>;
+    return (
+      <div className="space-y-2 px-2">
+        {Array.from({
+          length: 6,
+        }).map((_, i) => (
+          <div key={i} className="h-10 animate-pulse rounded-lg bg-white/5" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!data?.length) {
+    return (
+      <div className="px-3 py-8 text-center">
+        <p className="text-sm text-zinc-500">No documents yet</p>
+
+        <p className="mt-1 text-xs text-zinc-600">Create your first AI note</p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-1">
-      {documents?.map((doc) => (
-        <button
-          key={doc.id}
-          onClick={() => router.push(`/documents/${doc.id}`)}
-          className="w-full rounded px-3 py-2 text-left hover:bg-zinc-900"
-        >
-          {doc.title}
-        </button>
-      ))}
-    </div>
+    <SidebarMenu>
+      {data.map((document) => {
+        const isActive = pathname === `/documents/${document.id}`;
+
+        return (
+          <SidebarMenuItem key={document.id}>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive}
+              className="
+                h-11 rounded-xl
+                transition-all duration-200
+                hover:bg-white/5
+                data-[active=true]:bg-white/10
+                data-[active=true]:shadow-sm
+              "
+            >
+              <Link href={`/documents/${document.id}`}>
+                <FileText className="h-4 w-4 shrink-0" />
+
+                <span className="truncate text-sm">{document.title}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        );
+      })}
+    </SidebarMenu>
   );
 }

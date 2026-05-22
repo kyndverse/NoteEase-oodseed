@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useImportPdf } from "../api/import-pdf";
 import { useRouter } from "next/navigation";
+import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 export const ImportPdf = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -36,10 +37,11 @@ export const ImportPdf = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
-          <Upload className="mr-2 h-4 w-4" />
-          Import PDF
-        </Button>
+        <SidebarMenuButton tooltip="Import PDF" className="h-11">
+          <Upload className="h-4 w-4" />
+
+          <span>Import PDF</span>
+        </SidebarMenuButton>
       </DialogTrigger>
 
       <DialogContent>
