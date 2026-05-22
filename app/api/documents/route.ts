@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const document = await prisma.document.create({
       data: {
         title: validatedField.data.title,
-        content: [
+        content: body.content || [
           {
             id: uuid(),
             type: "paragraph",
