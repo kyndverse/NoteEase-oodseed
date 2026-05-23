@@ -44,7 +44,7 @@ export function DocumentList() {
   return (
     <SidebarMenu>
       {data.map((document) => {
-        const isActive = pathname === `/documents/${document.id}`;
+        const isActive = pathname === `/app/documents/${document.id}`;
 
         return (
           <SidebarMenuItem key={document.id}>
@@ -59,7 +59,7 @@ export function DocumentList() {
                 data-[active=true]:shadow-sm
               "
             >
-              <Link href={`/documents/${document.id}`}>
+              <Link href={`/app/documents/${document.id}`}>
                 <FileText className="h-4 w-4 shrink-0" />
 
                 <span className="truncate text-sm">{document.title}</span>

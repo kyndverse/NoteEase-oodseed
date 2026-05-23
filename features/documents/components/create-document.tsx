@@ -40,7 +40,7 @@ const CreateDocument = () => {
       onSuccess: (document) => {
         reset();
         setOpen(false);
-        router.push(`/documents/${document.id}`);
+        router.push(`/app/documents/${document.id}`);
       },
     });
   };

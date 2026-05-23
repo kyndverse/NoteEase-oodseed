@@ -43,7 +43,7 @@ export function CommandMenu() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="p-0 sm:max-w-2xl">
+      <DialogContent className="p-0 sm:max-w-2xl" aria-describedby={undefined}>
         <DialogHeader className="hidden">
           <DialogTitle>Command Menu</DialogTitle>
         </DialogHeader>
@@ -73,7 +73,7 @@ export function CommandMenu() {
                 <CommandItem
                   key={document.id}
                   onSelect={() => {
-                    router.push(`/documents/${document.id}`);
+                    router.push(`/app/documents/${document.id}`);
 
                     setOpen(false);
                   }}

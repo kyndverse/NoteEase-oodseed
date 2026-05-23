@@ -29,7 +29,7 @@ export const ImportPdf = () => {
 
     const document = await importPdfMutation.mutateAsync(file);
 
-    router.push(`/documents/${document.id}`);
+    router.push(`/app/documents/${document.id}`);
 
     setOpen(false);
   };
