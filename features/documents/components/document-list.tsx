@@ -1,21 +1,18 @@
 "use client";
 
 import Link from "next/link";
-
 import { usePathname } from "next/navigation";
-
 import { FileText } from "lucide-react";
-
 import { useDocuments } from "../api/get-documents";
-
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useSearch } from "@/components/providers/SearchProvider";
+import { formatDistanceToNow } from "date-fns";
 
-export function DocumentList() {
+export const DocumentList = () => {
   const pathname = usePathname();
 
   const { data, isLoading } = useDocuments();
@@ -68,17 +65,20 @@ export function DocumentList() {
               asChild
               isActive={isActive}
               className="
-                h-11 rounded-xl
-                transition-all duration-200
-                hover:bg-white/5
-                data-[active=true]:bg-white/10
-                data-[active=true]:shadow-sm
-              "
+                h-11 rounded-xl transition-all duration-200 hover:bg-white/5 data-[active=true]:bg-white/10 data-[active=true]:shadow-sm"
             >
               <Link href={`/app/documents/${document.id}`}>
                 <FileText className="h-4 w-4 shrink-0" />
 
-                <span className="truncate text-sm">{document.title}</span>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate text-sm">{document.title}</span>
+
+                  <span className="text-xs text-zinc-500">
+                    {formatDistanceToNow(new Date(document.updatedAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
