@@ -55,7 +55,7 @@ const EditorInstance = ({
   return (
     <main className="min-h-screen text-white">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 lg:px-10">
-        <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#141414]/80 shadow-2xl backdrop-blur-xl">
+        <div className="rounded-3xl border border-white/10 bg-[#141414]/80 shadow-2xl backdrop-blur-xl">
           <div className="w-full px-8 py-10">
             <BlockNoteView
               editor={editor}
