@@ -13,11 +13,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useSearch } from "@/components/providers/SearchProvider";
 
 export function DocumentList() {
   const pathname = usePathname();
 
   const { data, isLoading } = useDocuments();
+
+  const { query } = useSearch();
 
   if (isLoading) {
     return (
@@ -41,9 +44,22 @@ export function DocumentList() {
     );
   }
 
+  const filteredDocuments =
+    data?.filter((document) =>
+      document.title.toLowerCase().includes(query.toLowerCase()),
+    ) || [];
+
+  if (!filteredDocuments.length) {
+    return (
+      <div className="px-3 py-8 text-center">
+        <p className="text-sm text-zinc-500">No documents found</p>
+      </div>
+    );
+  }
+
   return (
     <SidebarMenu>
-      {data.map((document) => {
+      {filteredDocuments.map((document) => {
         const isActive = pathname === `/app/documents/${document.id}`;
 
         return (

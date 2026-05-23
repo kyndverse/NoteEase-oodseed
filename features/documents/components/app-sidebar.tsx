@@ -12,6 +12,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import DocumentSearch from "./document-search";
 
 export const AppSidebar = () => {
   return (
@@ -28,9 +29,7 @@ export const AppSidebar = () => {
           </div>
 
           <div className="group-data-[collapsible=icon]:hidden">
-            <h1 className="text-sm font-semibold tracking-tight">
-              NoteEase
-            </h1>
+            <h1 className="text-sm font-semibold tracking-tight">NoteEase</h1>
 
             <p className="text-xs text-zinc-500">Smart notebook</p>
           </div>
@@ -43,7 +42,7 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
 
-          <SidebarGroupContent className="space-y-2">
+          <SidebarGroupContent >
             <CreateDocument />
 
             <ImportPdf />
@@ -54,7 +53,9 @@ export const AppSidebar = () => {
         <SidebarGroup className="flex-1">
           <SidebarGroupLabel>Documents</SidebarGroupLabel>
 
-          <SidebarGroupContent>
+          <DocumentSearch />
+
+          <SidebarGroupContent className="mt-2">
             <DocumentList />
           </SidebarGroupContent>
         </SidebarGroup>
