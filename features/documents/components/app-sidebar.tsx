@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Sparkles, PenSquare } from "lucide-react";
 import CreateDocument from "./create-document";
 import { DocumentList } from "./document-list";
 import { ImportPdf } from "./import-pdf";
@@ -11,8 +11,12 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import DocumentSearch from "./document-search";
+import Link from "next/link";
 
 export const AppSidebar = () => {
   return (
@@ -42,9 +46,20 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
 
-          <SidebarGroupContent >
-            <CreateDocument />
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link href="/app/canvas" className="h-11">
+                    <PenSquare className="h-4 w-4" />
 
+                    <span>Canvas</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+
+            <CreateDocument />
             <ImportPdf />
           </SidebarGroupContent>
         </SidebarGroup>
