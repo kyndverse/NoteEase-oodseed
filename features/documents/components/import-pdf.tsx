@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Upload } from "lucide-react";
+import { Upload, FileText, Loader2, Sparkles } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -11,16 +11,32 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useImportPdf } from "../api/import-pdf";
 import { useRouter } from "next/navigation";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { useDropzone } from "react-dropzone";
 
 export const ImportPdf = () => {
   const [file, setFile] = useState<File | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+
+    multiple: false,
+
+    onDrop: (acceptedFiles) => {
+      const selected = acceptedFiles[0];
+
+      if (selected) {
+        setFile(selected);
+      }
+    },
+  });
 
   const importPdfMutation = useImportPdf();
 
@@ -54,24 +70,59 @@ export const ImportPdf = () => {
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <Input
-            type="file"
-            accept=".pdf"
-            onChange={(e) => {
-              const selected = e.target.files?.[0];
+          <div
+            {...getRootProps()}
+            className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed px-6 py-10 text-center transition-all duration-200 ${
+              isDragActive
+                ? "border-white bg-white/10"
+                : "border-white/10 bg-white/5 hover:bg-white/10"
+            }`}
+          >
+            <input {...getInputProps()} />
 
-              if (selected) {
-                setFile(selected);
-              }
-            }}
-          />
+            {file ? (
+              <>
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
+                  <FileText className="h-7 w-7 text-white" />
+                </div>
+
+                <p className="text-sm font-medium text-white">{file.name}</p>
+
+                <p className="mt-1 text-xs text-zinc-500">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
+                  <Upload className="h-7 w-7 text-white" />
+                </div>
+
+                <p className="text-sm font-medium text-white">
+                  Drop your PDF here
+                </p>
+
+                <p className="mt-1 text-xs text-zinc-500">or click to browse</p>
+              </>
+            )}
+          </div>
 
           <Button
-            className="w-full"
+            className="h-11 w-full rounded-xl"
             onClick={handleImport}
             disabled={!file || importPdfMutation.isPending}
           >
-            {importPdfMutation.isPending ? "Processing..." : "Import PDF"}
+            {importPdfMutation.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                AI is processing...
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2 h-4 w-4" />
+                Generate AI Notes
+              </>
+            )}
           </Button>
         </div>
       </DialogContent>
