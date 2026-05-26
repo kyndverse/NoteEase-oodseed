@@ -71,6 +71,13 @@ export default function CanvasEditor() {
           onOpen={() => {
             router.push(`/app/documents/${selectedDocumentId}`);
           }}
+          onConnect={() => {
+            const editor = useCanvasStore.getState().editor;
+
+            if (!editor) return;
+
+            editor.setCurrentTool("arrow");
+          }}
         />
       )}
     </div>
