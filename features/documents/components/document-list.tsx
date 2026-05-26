@@ -2,13 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText } from "lucide-react";
+import { FileText, PlusSquare } from "lucide-react";
 import { useDocuments } from "../api/get-documents";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { useSearch } from "@/components/providers/SearchProvider";
 import { formatDistanceToNow } from "date-fns";
 
@@ -61,13 +57,13 @@ export const DocumentList = () => {
 
         return (
           <SidebarMenuItem key={document.id}>
-            <SidebarMenuButton
-              asChild
-              isActive={isActive}
-              className="
-                h-11 rounded-xl transition-all duration-200 hover:bg-white/5 data-[active=true]:bg-white/10 data-[active=true]:shadow-sm"
+            <div
+              className={`group flex h-11 items-center gap-2 rounded-xl px-2  transition-all duration-200 ${isActive ? "bg-white/10 shadow-sm" : "hover:bg-white/5"}`}
             >
-              <Link href={`/app/documents/${document.id}`}>
+              <Link
+                href={`/app/documents/${document.id}`}
+                className="flex min-w-0 flex-1 items-center gap-2"
+              >
                 <FileText className="h-4 w-4 shrink-0" />
 
                 <div className="flex min-w-0 flex-1 flex-col">
@@ -80,10 +76,29 @@ export const DocumentList = () => {
                   </span>
                 </div>
               </Link>
-            </SidebarMenuButton>
+
+              <button
+                className="opacity-0 transition-opacity group-hover:opacity-100"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  localStorage.setItem(
+                    "pending-document",
+                    JSON.stringify({
+                      documentId: document.id,
+                      title: document.title,
+                    }),
+                  );
+
+                  window.location.href = "/app/canvas";
+                }}
+              >
+                <PlusSquare className="h-4 w-4 text-zinc-500 hover:text-white" />
+              </button>
+            </div>
           </SidebarMenuItem>
         );
       })}
     </SidebarMenu>
   );
-}
+};
