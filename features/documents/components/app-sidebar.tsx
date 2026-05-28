@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles, PenSquare } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import CreateDocument from "./create-document";
 import { DocumentList } from "./document-list";
 import { ImportPdf } from "./import-pdf";
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import DocumentSearch from "./document-search";
 import Link from "next/link";
+import Image from "next/image";
 
 export const AppSidebar = () => {
   return (
@@ -29,7 +30,7 @@ export const AppSidebar = () => {
       <SidebarHeader className="px-4 py-4">
         <div className=" flex items-center gap-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0">
           <div className=" flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-lg  shrink-0   ">
-            <Sparkles className="h-4 w-4" />
+            <Image src="/logo-ods.png" alt="logo" width={100} height={100} />
           </div>
 
           <div className="group-data-[collapsible=icon]:hidden">

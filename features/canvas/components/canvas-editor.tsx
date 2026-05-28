@@ -1,12 +1,13 @@
 "use client";
 
-import { Tldraw } from "tldraw";
+import { AssetRecordType, Tldraw } from "tldraw";
 import "tldraw/tldraw.css";
 import { useCanvasStore } from "../store/canvas-store";
 import { useEffect, useState } from "react";
 import { sendDocumentToCanvas } from "../lib/send-document-to-canvas";
 import { CanvasToolbar } from "./canvas-toolbar";
 import { useRouter } from "next/navigation";
+import { VectorSidebar } from "./vector-sidebar";
 
 export default function CanvasEditor() {
   const editor = useCanvasStore((state) => state.editor);
@@ -35,6 +36,46 @@ export default function CanvasEditor() {
 
     localStorage.removeItem("pending-document");
   }, [editor]);
+
+  const handleInsertVector = (src: string) => {
+    const editor = useCanvasStore.getState().editor;
+
+    if (!editor) return;
+
+    editor.selectNone();
+    const viewport = editor.getViewportPageBounds();
+
+    const assetId = AssetRecordType.createId();
+
+    editor.createAssets([
+      {
+        id: assetId,
+        typeName: "asset",
+        type: "image",
+        props: {
+          name: "vector",
+          src,
+          w: 120,
+          h: 120,
+          mimeType: "image/svg+xml",
+          isAnimated: false,
+        },
+        meta: {},
+      },
+    ]);
+
+    editor.createShape({
+      type: "image",
+      parentId: editor.getCurrentPageId(),
+      x: viewport.center.x - 60,
+      y: viewport.center.y - 60,
+      props: {
+        assetId,
+        w: 120,
+        h: 120,
+      },
+    });
+  };
 
   return (
     <div className="h-[calc(100vh-56px)]">
@@ -67,11 +108,21 @@ export default function CanvasEditor() {
         }}
       />
       {selectedDocumentId && (
-        <CanvasToolbar
-          onOpen={() => {
-            router.push(`/app/documents/${selectedDocumentId}`);
-          }}
-        />
+        <>
+          <CanvasToolbar
+            onOpen={() => {
+              router.push(`/app/documents/${selectedDocumentId}`);
+            }}
+            onConnect={() => {
+              const editor = useCanvasStore.getState().editor;
+
+              if (!editor) return;
+
+              editor.setCurrentTool("arrow");
+            }}
+          />
+          <VectorSidebar onInsert={handleInsertVector} />
+        </>
       )}
     </div>
   );
