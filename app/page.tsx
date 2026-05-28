@@ -1,6 +1,8 @@
 "use client";
 
+import Link from 'next/link'
 import { useRouter } from "next/navigation";
+import NoteEaseLanding from "@/components/landing-page/LandingPage";
 
 export default function Home() {
   const router = useRouter();
@@ -16,13 +18,20 @@ export default function Home() {
   };
 
   return (
-    <main className="p-10">
-      <button
+    <main >
+      <div onClick={() => router.push("/app")}>
+        <NoteEaseLanding/>
+      </div>
+      {/* <button
         onClick={createDocument}
         className="bg-white text-black px-4 py-2 rounded"
       >
         Create Document
-      </button>
+      </button> */}
+     
+      
+      
+      
     </main>
   );
 }
