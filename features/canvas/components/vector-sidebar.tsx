@@ -14,7 +14,7 @@ export function VectorSidebar({
   return (
     <div
       className="
-        absolute top-4 right-4 z-50
+        absolute top-15 left-4 z-50
         flex w-64 flex-col gap-3
         rounded-2xl border border-white/10
         bg-[#111111]/90 p-4
